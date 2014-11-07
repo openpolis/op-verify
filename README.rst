@@ -1,17 +1,16 @@
-Politici verification tasks
-=============================
+Openpolis verification tasks
+============================
 
-Management tasks and admin interface for verifying politici data consistency"
+Management tasks and admin interface for verifying openpolis data consistency"
 
-Vedi la cartella `project/` per il codice sorgente.
+See `project/` folde for the source code (django/python).
 
-Vedi la cartella `docs/` per la documentazione completa del progetto.
+See `docs/` for a still uncomplete documentation.
 
 Development
 -----------
 
-Clona questo repository, entra nella cartella creata poi esegui:
-
+Clone this repository, get in the created folder, then run:
 ::
 
     $ pip install -r requirements/development.txt
@@ -35,8 +34,8 @@ To start functional test with selenium:
 License
 -------
 
-Vedi il file LICENSE.txt
-Vedi gli autori di questo progetto nel file CONTRIBUTORS.txt
+See LICENSE.txt file
+See authors of this project in CONTRIBUTORS.txt
 
 
 -----
