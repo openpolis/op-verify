@@ -234,6 +234,10 @@ LOGGING = {
             'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
             'datefmt' : "%d/%b/%Y %H:%M:%S"
         },
+        'standard': {
+            'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt': "%d/%b/%Y %H:%M:%S"
+        },
         'simple': {
             'format': '%(levelname)s %(message)s'
         },
@@ -255,8 +259,26 @@ LOGGING = {
             'filename': normpath(join(RESOURCES_PATH, 'logs', 'verify.log')),
             'formatter': 'verbose'
         },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
+        },
+        'logfile': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': normpath(join(RESOURCES_PATH, 'logs', 'verify.log')),
+            'maxBytes': 10000000,
+            'backupCount': 10,
+            'formatter': 'standard',
+        },
     },
     'loggers': {
+        'management': {
+            'handlers': ['console', 'logfile'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
         'django.request': {
             'handlers': ['mail_admins'],
             'level': 'ERROR',

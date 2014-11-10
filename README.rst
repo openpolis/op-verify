@@ -1,7 +1,7 @@
 Openpolis verification tasks
 ============================
 
-Management tasks and admin interface for verifying openpolis data consistency"
+Management tasks and admin interface for verifying openpolis data consistency
 
 See `project/` folde for the source code (django/python).
 
