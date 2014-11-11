@@ -1,33 +1,45 @@
-from StringIO import StringIO
+from django import forms
 from django.contrib import admin
-from django.core import serializers
 from django.core.management import call_command, CommandError
-from django.http import HttpResponse, StreamingHttpResponse
-import time
+from django.core.urlresolvers import reverse
+from django.http import StreamingHttpResponse
+from django.utils.translation import ugettext_lazy as _
+from django.utils.safestring import mark_safe
 from .models import Rule, Verification
 
 __author__ = 'guglielmo'
 
 def run_verification(request, id):
-    return HttpResponse(stream_generator(id), content_type="text/plain")
+    response = StreamingHttpResponse(stream_generator(request, id), content_type="text/html")
+    return response
 
-def stream_generator(id):
+def stream_generator(request, id):
     rule = Rule.objects.get(pk=id)
 
-    yield "Verifying rule: %s" % rule  # Returns a chunk of the response to the browser
-    try:
-        call_command(rule.task, verbosity=2)
-    except CommandError as e:
-        yield " ! %s" % e
-    except Exception as e:
-        yield " ! Error in execution: %s" % e
-    yield "\n"
+    yield "Verifying rule: %s ... <br/>" % rule  # Returns a chunk of the response to the browser
     yield " " * 1000
+    try:
+        call_command(rule.task, verbosity=2, parameters=rule.default_parameters, username=request.user.username)
+        yield " Rule verification terminated. Status: {0}<br/>".format(rule.status)
+        yield ' Go back to <a href="/admin/verify/rule/{0}">rule page</a>.<br/>'.format(rule.id)
+        yield " " * 1000
+
+    except CommandError as e:
+        yield " ! %s<br/>" % e
+        yield " " * 1000
+    except Exception as e:
+        yield " ! Error in execution: %s<br/>" % e
+        yield " " * 1000
+
 
 class VerificationInline(admin.TabularInline):
     model = Verification
     extra = 0
-    readonly_fields = ('launch_ts', 'duration', 'outcome', 'csv_report', 'user', 'parameters')
+    exclude = ('csv_report', )
+    list_display = readonly_fields = ('launch_ts', 'duration', 'outcome', 'user', 'csv_report_link', 'parameters')
+
+    def get_queryset(self, request):
+        return super(VerificationInline, self).get_queryset(request).order_by('-launch_ts')
 
 class RuleAdmin(admin.ModelAdmin):
     list_display = ['__unicode__', 'status', 'last_launched_at', 'notes']

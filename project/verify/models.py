@@ -1,6 +1,7 @@
 from autoslug import AutoSlugField
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.utils.safestring import mark_safe
 from model_utils import Choices
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -70,10 +71,17 @@ class Verification(models.Model):
     launch_ts = models.DateTimeField(_("launch timestamp"), help_text=_("The date and time when the verification was launched"))
     duration = models.IntegerField(_("duration"), blank=True, null=True, help_text=_("Duration of the verification, in seconds"))
     outcome = models.IntegerField(_('verification'), choices=OUTCOME, null=True, blank=True, help_text=_("Verification outcome"))
-    csv_report = models.FileField(blank=True, null=True, help_text=_("CSV report generated"), upload_to="/media")
+    csv_report = models.FileField(blank=True, null=True, help_text=_("CSV report generated"), upload_to="reports/%Y/%m/%d")
     user = models.ForeignKey(User, help_text=_("The operator that launched the verification"))
     parameters = models.CharField(max_length=128, help_text=_("Parameters, as a key/value csv sequence: k1=v1,k2=v2,k3=v3,..."), blank=True, null=True)
-    note = models.CharField(max_length=256, blank=True, null=True, help_text=_("A note, to describe particular issues emerged in the verification, max 256 chars."))
+    note = models.CharField(max_length=1024, blank=True, null=True, help_text=_("A note, to describe particular issues emerged in the verification, max 256 chars."))
+
+
+    def csv_report_link(self):
+        if self.csv_report:
+            return mark_safe("<a href='%s'>download report</a>" % (self.csv_report.url,))
+        else:
+            return "No report"
 
     def __unicode__(self):
         return u"{0}".format(self.launch_ts)

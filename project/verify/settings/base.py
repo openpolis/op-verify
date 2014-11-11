@@ -1,6 +1,4 @@
 """Common settings and globals."""
-
-
 from os.path import abspath, basename, dirname, join, normpath
 from sys import path
 from environ import Env
@@ -59,7 +57,9 @@ DEFAULT_FROM_EMAIL = ADMINS[0][1]
 ########## DATABASE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    'default': env.db(default='sqlite:///{0}'.format(normpath(join(RESOURCES_PATH, 'db', 'default.db'))))
+#    'default': env.db(default='sqlite:///{0}'.format(normpath(join(RESOURCES_PATH, 'db', 'default.db'))))
+    'default':  env.db('DB_DEFAULT_URL'),
+    'politici': env.db('DB_POLITICI_URL'),
 }
 ########## END DATABASE CONFIGURATION
 
@@ -197,7 +197,7 @@ DJANGO_APPS = (
 
     # Admin panel and documentation:
     'django.contrib.admin',
-    # 'django.contrib.admindocs',
+    'django.contrib.admindocs',
 
     # extensions
     'django_extensions',
@@ -304,3 +304,5 @@ INSTALLED_APPS += (
 # Don't need to use South when setting up a test database.
 SOUTH_TESTS_MIGRATE = False
 ########## END SOUTH CONFIGURATION
+
+
