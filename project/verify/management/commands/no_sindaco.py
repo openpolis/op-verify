@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import csv
 from optparse import make_option
+import os
 import csvkit
 from django.core.files import File
 from django.utils import timezone
@@ -50,7 +51,7 @@ class Command(VerifyBaseCommand):
         task_name = module_name.split(".")[-1]
 
         note = None
-        csv_report = None
+        ko_locs = []
 
         # verification process
         # todo: substitute IDs with names or strings
@@ -71,11 +72,20 @@ class Command(VerifyBaseCommand):
 
             if ko_locs.count():
                 outcome = Verification.OUTCOME.failed
+                self.logger.info(
+                    "  failure! {0} non-compliant locations found.".format(
+                        ko_locs.count()
+                    )
+                )
             else:
                 outcome = Verification.OUTCOME.succeded
+                self.logger.info(
+                    "  success! all locations are compliant."
+                )
         except Exception as e:
             outcome = Verification.OUTCOME.error
             note = unicode(e)
+            self.logger.warning(unicode(e))
 
         # Verification added to Rule
         r = Rule.objects.get(task=task_name)
@@ -85,25 +95,33 @@ class Command(VerifyBaseCommand):
             duration=(timezone.now() -launch_ts).seconds,
             user=User.objects.get(username=self.username),
             parameters=self.parameters,
-            csv_report=csv_report,
             note=note
         )
 
         if outcome == Verification.OUTCOME.failed:
             # report creation (csv)
             csvname = "{0}_{1}.csv".format(task_name, launch_ts.strftime("%H%M%S"))
-            csv_filename = normpath(join(settings.MEDIA_ROOT, 'reports', csvname))
+            csv_filename = normpath(join(settings.MEDIA_ROOT, csvname))
 
+            self.logger.debug("  {0} tmp file created".format(csv_filename))
             with open(csv_filename, 'wb+') as destination:
-                csv_report = File(destination)
                 csvwriter = csvkit.CSVKitWriter(
-                    csv_report
+                    destination
                 )
                 csvwriter.writerow(["NOME", "LOC ID", "ABITANTI"])
-                for loc in ko_locs:
+                for i, loc in enumerate(ko_locs):
                     csvwriter.writerow(loc)
+                    if i and i%100 == 0:
+                        self.logger.debug("  {0} locations added to CSV".format(i))
+
+                self.logger.debug("  all {0} locations added to CSV".format(ko_locs.count()))
+
+                csv_report = File(destination)
                 v.csv_report = csv_report
                 v.save()
+                self.logger.debug("  {0} csv file added to Verification instance".format(v.csv_report.url))
+            os.remove(csv_filename)
+            self.logger.debug("  {0} tmp file removed".format(csv_filename))
 
         self.logger.info(
             "Verification {0} terminated".format(

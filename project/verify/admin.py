@@ -19,7 +19,7 @@ def stream_generator(request, id):
     yield "Verifying rule: %s ... <br/>" % rule  # Returns a chunk of the response to the browser
     yield " " * 1000
     try:
-        call_command(rule.task, verbosity=2, parameters=rule.default_parameters, username=request.user.username)
+        call_command(rule.task, verbosity='2', parameters=rule.default_parameters, username=request.user.username)
         yield " Rule verification terminated. Status: {0}<br/>".format(rule.status)
         yield ' Go back to <a href="/admin/verify/rule/{0}">rule page</a>.<br/>'.format(rule.id)
         yield " " * 1000

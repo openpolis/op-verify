@@ -47,15 +47,7 @@ class VerifyBaseCommand(BaseCommand):
 
     def pre_handle(self, *args, **options):
 
-        verbosity = options['verbosity']
-        if verbosity == '0':
-            self.logger.setLevel(logging.ERROR)
-        elif verbosity == '1':
-            self.logger.setLevel(logging.WARNING)
-        elif verbosity == '2':
-            self.logger.setLevel(logging.INFO)
-        elif verbosity == '3':
-            self.logger.setLevel(logging.DEBUG)
+        self.verbosity = options['verbosity']
 
         # inject parameters into class, as attributes
         # if passed through the 'parameters' option
@@ -67,6 +59,16 @@ class VerifyBaseCommand(BaseCommand):
             )
             for k,v in params_dict.items():
                 self.__setattr__(k, v)
+
+
+        if self.verbosity == '0':
+            self.logger.setLevel(logging.ERROR)
+        elif self.verbosity == '1':
+            self.logger.setLevel(logging.WARNING)
+        elif self.verbosity == '2':
+            self.logger.setLevel(logging.INFO)
+        elif self.verbosity == '3':
+            self.logger.setLevel(logging.DEBUG)
 
         self.username = options['username']
         self.dryrun = options['dryrun']
