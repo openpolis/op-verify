@@ -42,6 +42,10 @@ class VerifyBaseCommand(BaseCommand):
                     dest='username',
                     default='admin',
                     help='Logged user launching the command'),
+        make_option('--rule-id',
+                    dest='rule_id',
+                    default=0,
+                    help='Id of the rule to associate the task'),
         )
 
     logger = logging.getLogger('management')
@@ -71,6 +75,19 @@ class VerifyBaseCommand(BaseCommand):
             self.logger.setLevel(logging.DEBUG)
 
 
+        # if rule_id is passed as an argument
+        # parameters taken from the rule override defaults
+        r = None
+        self.rule_id = int(options['rule_id'])
+        if self.rule_id:
+            r = Rule.objects.get(pk=self.rule_id)
+            if r.default_parameters:
+                params_dict = dict(
+                    tuple(p.split("=")) for p in r.default_parameters.split(",")
+                )
+                for k,v in params_dict.items():
+                    options[k] = v
+
         launch_ts = timezone.now()
 
         self.note = None
@@ -91,22 +108,30 @@ class VerifyBaseCommand(BaseCommand):
 
 
         # Verification added to Rule
-        r = Rule.objects.get(task=task_name)
-        v = r.verification_set.create(
-            launch_ts=launch_ts,
-            outcome=outcome,
-            duration=(timezone.now() -launch_ts).seconds,
-            user=User.objects.get(username=self.username),
-            parameters=r.default_parameters,
-            note=self.note
-        )
+        v = None
+        if r:
+            v = r.verification_set.create(
+                launch_ts=launch_ts,
+                outcome=outcome,
+                duration=(timezone.now() -launch_ts).seconds,
+                user=User.objects.get(username=self.username),
+                parameters=r.default_parameters,
+                note=self.note
+            )
 
         if outcome == Verification.OUTCOME.failed:
             # report creation (csv)
-            csvname = "{0}_{1}.csv".format(task_name, launch_ts.strftime("%H%M%S"))
+            if self.rule_id:
+                csvname = "{0}_{1}.csv".format(r.slug, launch_ts.strftime("%H%M%S"))
+            else:
+                csvname = "{0}_{1}.csv".format(task_name, launch_ts.strftime("%H%M%S"))
             csv_filename = normpath(join(settings.MEDIA_ROOT, csvname))
 
-            self.logger.debug("  {0} tmp file created".format(csv_filename))
+            if v:
+                self.logger.debug("  {0} tmp file created".format(csv_filename))
+            else:
+                self.logger.info("  {0} report file created".format(csv_filename))
+
             with open(csv_filename, 'wb+') as destination:
                 csvwriter = csvkit.CSVKitWriter(
                     destination
@@ -120,11 +145,12 @@ class VerifyBaseCommand(BaseCommand):
                 self.logger.debug("  all {0} locations added to CSV".format(len(self.ko_locs)))
 
                 csv_report = File(destination)
-                v.csv_report = csv_report
-                v.save()
-                self.logger.debug("  {0} csv file added to Verification instance".format(v.csv_report.url))
-            os.remove(csv_filename)
-            self.logger.debug("  {0} tmp file removed".format(csv_filename))
+                if v is not None:
+                    v.csv_report = csv_report
+                    v.save()
+                    self.logger.debug("  {0} csv file added to Verification instance".format(v.csv_report.url))
+                    os.remove(csv_filename)
+                    self.logger.debug("  {0} tmp file removed".format(csv_filename))
 
         self.logger.info(
             "Verification {0} terminated".format(

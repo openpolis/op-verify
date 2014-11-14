@@ -96,10 +96,10 @@ class Command(VerifyBaseCommand):
     help = "Check that all institutions have the correct number of members"
 
     option_list = VerifyBaseCommand.option_list + (
-        make_option('--institution',
-            dest='institution',
+        make_option('--institution-id',
+            dest='institution_id',
             default=0,
-            help='Institution names (Consiglio Regionale, Giunta Regionale, ...) or IDs (5, 6, 7, 8, 9, 10, ...)',
+            help='Institution IDs (5, 6, 7, 8, 9, 10, ...)',
         ),
         make_option('--ab-threshold',
             dest='ab_threshold',

@@ -18,7 +18,7 @@ class Rule(models.Model):
     )
 
     title = models.CharField(_("title"), default="", max_length=128, help_text=_("A rule's title"))
-    slug = AutoSlugField(populate_from='title')
+    slug = AutoSlugField(populate_from='title', always_update=True)
     description = models.TextField(_("description"), blank=True, null=True, help_text=_("An extensive description of the rule"))
     is_active = models.BooleanField(_('is active'), help_text=_("Whether the rule is active or closed"), default=True)
     created_at = models.DateTimeField(_("creation date"), help_text=_("The date and time when the rule was created"), blank=True, null=True, auto_now_add=True)
