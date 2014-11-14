@@ -1,10 +1,6 @@
-from django import forms
 from django.contrib import admin
 from django.core.management import call_command, CommandError
-from django.core.urlresolvers import reverse
 from django.http import StreamingHttpResponse
-from django.utils.translation import ugettext_lazy as _
-from django.utils.safestring import mark_safe
 from .models import Rule, Verification
 
 __author__ = 'guglielmo'
@@ -16,10 +12,16 @@ def run_verification(request, id):
 def stream_generator(request, id):
     rule = Rule.objects.get(pk=id)
 
+    params_dict = {}
+    if rule.default_parameters:
+        params_dict = dict(
+            tuple(p.split("=")) for p in rule.default_parameters.split(",")
+        )
+
     yield "Verifying rule: %s ... <br/>" % rule  # Returns a chunk of the response to the browser
     yield " " * 1000
     try:
-        call_command(rule.task, verbosity='2', parameters=rule.default_parameters, username=request.user.username)
+        call_command(rule.task, verbosity='2', username=request.user.username, **params_dict)
         yield " Rule verification terminated. Status: {0}<br/>".format(rule.status)
         yield ' Go back to <a href="/admin/verify/rule/{0}">rule page</a>.<br/>'.format(rule.id)
         yield " " * 1000

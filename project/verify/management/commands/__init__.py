@@ -2,8 +2,13 @@
 
 from optparse import make_option
 import logging
-from django.contrib.auth.models import User
+import os
+import csvkit
+from django.core.files import File
 from django.core.management.base import BaseCommand
+from os.path import normpath, join
+from django.utils import timezone
+from verify.models import *
 
 __author__ = 'guglielmo'
 
@@ -33,10 +38,6 @@ class VerifyBaseCommand(BaseCommand):
                     default=False,
                     action='store_true',
                     help='Always overwrite values in the new DB from values in the old one'),
-        make_option('--parameters',
-                    dest='parameters',
-                    default='',
-                    help='Parameters, when passed through the admin interface'),
         make_option('--username',
                     dest='username',
                     default='admin',
@@ -45,22 +46,21 @@ class VerifyBaseCommand(BaseCommand):
 
     logger = logging.getLogger('management')
 
-    def pre_handle(self, *args, **options):
+
+    def execute_verification(self, *args, **options):
+        raise Exception("Not implemented")
+
+    def handle(self, *args, **options):
 
         self.verbosity = options['verbosity']
+        self.username = options['username']
+        self.dryrun = options['dryrun']
+        self.overwrite = options['overwrite']
 
-        # inject parameters into class, as attributes
-        # if passed through the 'parameters' option
-        # happens when calling command from admin
-        self.parameters = options['parameters']
-        if self.parameters:
-            params_dict = dict(
-                tuple(p.split("=")) for p in self.parameters.split(",")
-            )
-            for k,v in params_dict.items():
-                self.__setattr__(k, v)
+        self.offset = int(options['offset'])
+        self.limit = int(options['limit'])
 
-
+        # set log level, from verbosity
         if self.verbosity == '0':
             self.logger.setLevel(logging.ERROR)
         elif self.verbosity == '1':
@@ -70,9 +70,64 @@ class VerifyBaseCommand(BaseCommand):
         elif self.verbosity == '3':
             self.logger.setLevel(logging.DEBUG)
 
-        self.username = options['username']
-        self.dryrun = options['dryrun']
-        self.overwrite = options['overwrite']
 
-        self.offset = int(options['offset'])
-        self.limit = int(options['limit'])
+        launch_ts = timezone.now()
+
+        self.note = None
+        self.ok_locs = []
+        self.ko_locs = []
+        self.csv_headers = []
+
+        module_name = self.__class__.__module__
+        task_name = module_name.split(".")[-1]
+
+        try:
+            # verification process
+            outcome = self.execute_verification(*args, **options)
+        except Exception as e:
+            outcome = Verification.OUTCOME.error
+            self.note = unicode(e)
+            self.logger.warning(unicode(e))
+
+
+        # Verification added to Rule
+        r = Rule.objects.get(task=task_name)
+        v = r.verification_set.create(
+            launch_ts=launch_ts,
+            outcome=outcome,
+            duration=(timezone.now() -launch_ts).seconds,
+            user=User.objects.get(username=self.username),
+            parameters=r.default_parameters,
+            note=self.note
+        )
+
+        if outcome == Verification.OUTCOME.failed:
+            # report creation (csv)
+            csvname = "{0}_{1}.csv".format(task_name, launch_ts.strftime("%H%M%S"))
+            csv_filename = normpath(join(settings.MEDIA_ROOT, csvname))
+
+            self.logger.debug("  {0} tmp file created".format(csv_filename))
+            with open(csv_filename, 'wb+') as destination:
+                csvwriter = csvkit.CSVKitWriter(
+                    destination
+                )
+                csvwriter.writerow(self.csv_headers)
+                for i, loc in enumerate(self.ko_locs):
+                    csvwriter.writerow(loc)
+                    if i and i%100 == 0:
+                        self.logger.debug("  {0} locations added to CSV".format(i))
+
+                self.logger.debug("  all {0} locations added to CSV".format(len(self.ko_locs)))
+
+                csv_report = File(destination)
+                v.csv_report = csv_report
+                v.save()
+                self.logger.debug("  {0} csv file added to Verification instance".format(v.csv_report.url))
+            os.remove(csv_filename)
+            self.logger.debug("  {0} tmp file removed".format(csv_filename))
+
+        self.logger.info(
+            "Verification {0} terminated".format(
+                module_name
+            )
+        )
