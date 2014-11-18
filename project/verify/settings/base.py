@@ -316,6 +316,8 @@ INSTALLED_APPS += (
 )
 # Don't need to use South when setting up a test database.
 SOUTH_TESTS_MIGRATE = False
+SOUTH_DATABASE_ADAPTERS = {'default':'south.db.postgresql_psycopg2'}
+
 ########## END SOUTH CONFIGURATION
 
 ########## ATTREZZI CONFIGURATION
