@@ -147,6 +147,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.tz',
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
+
+    # allauth specific context processors
+    'allauth.account.context_processors.account',
+    'allauth.socialaccount.context_processors.socialaccount',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
@@ -203,6 +207,11 @@ DJANGO_APPS = (
     'django_extensions',
     'recurrence',
 
+    # allauth and attrezzi
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'attrezzi.accesso',
 )
 
 # Apps specific for this project go here.
@@ -218,6 +227,10 @@ INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS
 ########## AUTHENTICATION CONFIGURATION
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+
 )
 ########## END AUTHENTICATION CONFIGURATION
 
@@ -305,4 +318,11 @@ INSTALLED_APPS += (
 SOUTH_TESTS_MIGRATE = False
 ########## END SOUTH CONFIGURATION
 
-
+########## ATTREZZI CONFIGURATION
+ATTREZZI_ACCESSO_URL = env.str('ATTREZZI_ACCESSO_URL', 'http://example.com')
+ATTREZZI = {
+    'ACCESSO_ACCESS_TOKEN_URL': '%s/o/token/' % ATTREZZI_ACCESSO_URL,
+    'ACCESSO_AUTHORIZE_URL': '%s/o/authorize/' % ATTREZZI_ACCESSO_URL,
+    'ACCESSO_PROFILE_URL': '%s/api/v1/users/me' % ATTREZZI_ACCESSO_URL,
+}
+########## END ATTREZZI CONFIGURATION

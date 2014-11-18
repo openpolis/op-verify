@@ -17,6 +17,7 @@ urls = (
 
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^accounts/', include('allauth.urls')),
 
 )
 urlpatterns = patterns('', *urls)
