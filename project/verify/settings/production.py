@@ -28,7 +28,7 @@ EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='guglielmo@openpolis.it')
 EMAIL_PORT = env('EMAIL_PORT', default=587)
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-subject-prefix
-EMAIL_SUBJECT_PREFIX = env('EMAIL_SUBJECT_PREFIX', '[%s] ' % PROJECT_NAME)
+EMAIL_SUBJECT_PREFIX = env('EMAIL_SUBJECT_PREFIX', default= '[%s] ' % PROJECT_NAME)
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-use-tls
 EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', True)
@@ -36,13 +36,6 @@ EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', True)
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#server-email
 SERVER_EMAIL = EMAIL_HOST_USER
 ########## END EMAIL CONFIGURATION
-
-########## DATABASE CONFIGURATION
-DATABASES = {
-    'default': env.db(),
-}
-########## END DATABASE CONFIGURATION
-
 
 ########## CACHE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#caches
