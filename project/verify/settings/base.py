@@ -43,7 +43,7 @@ TEMPLATE_DEBUG = DEBUG
 ########## MANAGER CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = (
-    ('Guglielmo', 'guglielmo@openpolis.it'),
+    ('Guglielmo', 'guglielmo.celata@depp.it'),
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
@@ -328,3 +328,6 @@ ATTREZZI = {
     'ACCESSO_PROFILE_URL': '%s/api/v1/users/me' % ATTREZZI_ACCESSO_URL,
 }
 ########## END ATTREZZI CONFIGURATION
+
+LOGIN_REDIRECT_URL = "/"
+ACCOUNT_EMAIL_VERIFICATION = None

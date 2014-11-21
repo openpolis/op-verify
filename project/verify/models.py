@@ -1,6 +1,10 @@
+import logging
+from allauth.account.signals import user_signed_up, email_confirmed
 from autoslug import AutoSlugField
 from django.conf import settings
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
+from django.core.exceptions import ObjectDoesNotExist
+from django.dispatch import receiver
 from django.utils.safestring import mark_safe
 from model_utils import Choices
 from django.db import models
@@ -89,5 +93,39 @@ class Verification(models.Model):
     class Meta:
         verbose_name = _("Verification")
         verbose_name_plural = _("Verifications")
+
+
+@receiver(user_signed_up)
+def add_is_staff(sender, **kwargs):
+    """
+    add is_staff, is_superuser and operator group to users that sign up
+
+    since the only method to sign up is by the external depp.accesso account,
+    this is done every time a user signs up through the depp.accesso account.
+
+    :param sender: The class sending the signal
+    :param kwargs: KW arguments sent along with the signal
+    :return: void
+    """
+    social_login = kwargs['sociallogin'].account
+    user = kwargs['user']
+
+    try:
+
+        extra_data = social_login.extra_data
+
+        # staff users and superusers should retain their status
+        if 'is_superuser' in extra_data:
+            user.is_superuser = extra_data['is_superuser']
+        if 'is_staff' in extra_data:
+            user.is_staff = extra_data['is_staff']
+            # staff users should be added to operator group
+            og = Group.objects.get(name__iexact='operator')
+            user.groups.add(og)
+
+        user.save()
+
+    except ObjectDoesNotExist as e:
+        pass
 
 
