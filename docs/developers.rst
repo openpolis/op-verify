@@ -22,11 +22,12 @@ Verification tasks are management tasks extending the
 
 ``VerifyBaseCommand`` extends ``django.core.management.base.BaseCommand``
 and contains the logic common to all verification tasks:
- - parse general options and arguments,
- - launch the real verification code,
- - analyze the outcome,
- - add the related verification record to the db,
- - write the CSV to the file system, in case issues are detected
+
+- parse general options and arguments,
+- launch the real verification code,
+- analyze the outcome,
+- add the related verification record to the db,
+- write the CSV to the file system, in case issues are detected
 
 To add a new verification task, the class must extend ``VerifyBaseCommand``,
 and override the ``execute_verification`` method.

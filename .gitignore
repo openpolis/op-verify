@@ -28,6 +28,9 @@ nosetests.xml
 *.swp
 *.swo
 
+
+docs/_*
+
 # npm
 node_modules/
 

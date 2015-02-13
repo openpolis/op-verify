@@ -11,16 +11,8 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   concept
    install
    deploy
-   concept
    developers
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
