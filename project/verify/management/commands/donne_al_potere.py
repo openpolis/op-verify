@@ -44,10 +44,23 @@ class Command(VerifyBaseCommand):
             institution__id=institution_id
         )
 
+        if institution_id in (10, 11):          # giunta o consiglio comunale
+            qs = qs.filter(
+                location__name__in=self.get_capoluoghi()
+            ).values_list(
+                'location__name', 'location__prov', 'location__inhabitants'
+            )
+        elif institution_id in (6, 7, 8, 9):    # giunte o consigli provinciali o regionali
+            self.csv_headers = ["LOCALITA", "ABITANTI", "NUMERO"]
+            qs = qs.filter(
+                charge_type__id=1             # presidente
+            ).values_list(
+                'location__name', 'location__inhabitants'
+            )
+        else:
+            raise Exception("Wrong parameters passed to task.")
 
-        total = qs.values_list(
-            'location__name', 'location__prov', 'location__inhabitants',
-        ).annotate(
+        total = qs.annotate(
             num=Count('location')
         ).order_by(
             '-location__inhabitants'
@@ -56,8 +69,6 @@ class Command(VerifyBaseCommand):
 
         fem = qs.filter(
             politician__sex__iexact='f'       # sesso femminile
-        ).values_list(
-            'location__name', 'location__prov', 'location__inhabitants',
         ).annotate(
             num=Count('location')
         ).order_by(
