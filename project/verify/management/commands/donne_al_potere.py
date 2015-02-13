@@ -50,7 +50,7 @@ class Command(VerifyBaseCommand):
                 location__name__in=self.get_capoluoghi()
             )
         elif institution_id in (6, 7, 8, 9):    # giunte o consigli provinciali o regionali
-            self.csv_headers = ["LOCALITA", "ABITANTI", "N_DONNE", "N_TOTALI", "PERC"]
+            pass
         else:
             raise Exception("Wrong parameters passed to task.")
 
