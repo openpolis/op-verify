@@ -63,6 +63,36 @@ in the ``options`` dictionary.
 
 - Streaming results
 
+
+Capoluoghi
+----------
+
+There are 8200 *comuni* or cities in Italy, and 110 *province*.
+The 110 cities that are capitals of their provinces, are called Capoluoghi.
+
+The complete list of capoluoghi is here:
+http://it.wiktionary.org/wiki/Appendice:Elenco_Capoluoghi_di_Provincia
+
+It can be parsed into a CSV file, by using the DataMiner Chrome extension.
+The resulting file is under the project folder, and it's converted into json with
+this command::
+
+    csvcut -c1,2,3  project/capoluoghi.csv | csvjson --indent=4 > capoluoghi.json
+
+The second volumn header has been renamed "Provincia", and contains the name of the
+Province, only when this is different from the name of the city.
+
+This is used in the verification tasks, to extract only the capoluoghi cities::
+
+import json
+import os
+from django.conf import settings
+capoluoghi_json_filename = os.path.join(settings.PROJECT_PATH, 'capoluoghi.json')
+json_file=open(capoluoghi_json_filename)
+data = json.load(json_file)
+capoluoghi =  [d['Capoluogo'] for d in data]
+
+
 Todo
 ----
 
