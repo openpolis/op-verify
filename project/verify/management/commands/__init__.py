@@ -153,7 +153,8 @@ class VerifyBaseCommand(BaseCommand):
                     self.logger.debug("  {0} tmp file removed".format(csv_filename))
 
         self.logger.info(
-            "Verification {0} terminated".format(
-                module_name
+            "Verification {0} terminated after {1} seconds".format(
+                module_name, timezone.now() - launch_ts
             )
         )
+
