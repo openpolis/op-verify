@@ -40,6 +40,7 @@ class VerificationInline(admin.TabularInline):
 class RuleAdmin(admin.ModelAdmin):
     list_display = ['__unicode__', 'status', 'last_launched_at', 'notes']
     inlines = [VerificationInline,]
+    search_fields = ['title']
 
     buttons = [
         {
