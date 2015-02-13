@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
+import json
 
 from optparse import make_option
-import logging
 import os
 import csvkit
 from django.core.files import File
@@ -158,3 +158,11 @@ class VerifyBaseCommand(BaseCommand):
             )
         )
 
+    def get_capoluoghi(self):
+        """Returns the list of capoluoghi, as a
+        list of city names"""
+
+        capoluoghi_json_filename = os.path.join(settings.PROJECT_PATH, 'capoluoghi.json')
+        json_file=open(capoluoghi_json_filename)
+        data = json.load(json_file)
+        return [d['Capoluogo'] for d in data]

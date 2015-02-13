@@ -26,7 +26,7 @@ class Command(VerifyBaseCommand):
 
     def execute_verification(self, *args, **options):
         institution_id = int(options['institution_id'])
-        self.csv_headers = ["NOME", "COGNOME", "PARTITO", "INCARICO", "LOCALITA", "PROV", "ABITANTI"]
+        self.csv_headers = ["LOCALITA", "PROV", "ABITANTI", "NOME", "COGNOME", "PARTITO", "INCARICO"]
 
         self.logger.info(
             "Verification {0} launched with institution_id set to {1}".format(
@@ -47,25 +47,27 @@ class Command(VerifyBaseCommand):
 
         if institution_id == 10:              # giunta comunale
             qs = qs.filter(
+                location__name__in=self.get_capoluoghi()
+            ).filter(
                 Q(charge_type__id=16) |       # commissario
                 Q(charge_type__id=14) |       # sindaco
                 Q(charge_type__id=22)         # vice sindaco facente funzione
             ).values_list(
+                'location__name', 'location__prov', 'location__inhabitants',
                 'politician__first_name', 'politician__last_name',
-                'party__name', 'charge_type__name',
-                'location__name', 'location__prov', 'location__inhabitants'
+                'party__name', 'charge_type__name'
             )
         elif institution_id in (6, 8):        # giunte provinciali o regionali
-            self.csv_headers = ["NOME", "COGNOME", "PARTITO", "LOCALITA", "ABITANTI"]
+            self.csv_headers = ["LOCALITA", "ABITANTI", "NOME", "COGNOME", "PARTITO"]
             qs = qs.filter(
                 charge_type__id=1             # presidente
             ).values_list(
+                'location__name', 'location__inhabitants',
                 'politician__first_name', 'politician__last_name',
-                'party__name',
-                'location__name', 'location__inhabitants'
+                'party__name'
             )
         else:
-            raise Exception("Wron")
+            raise Exception("Wrong parameters passed to task.")
 
 
         self.ko_locs = qs.order_by('-location__inhabitants')
@@ -86,3 +88,5 @@ class Command(VerifyBaseCommand):
             )
 
         return outcome
+
+
