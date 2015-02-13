@@ -13,8 +13,8 @@ Contents:
 
    install
    deploy
-   getstarted
    concept
+   developers
 
 
 
