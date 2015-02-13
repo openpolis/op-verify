@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from collections import OrderedDict
+import locale
 from optparse import make_option
 from verify.management.commands import VerifyBaseCommand
 from verify.models import *
@@ -26,7 +27,7 @@ class Command(VerifyBaseCommand):
 
     def execute_verification(self, *args, **options):
         institution_id = int(options['institution_id'])
-        self.csv_headers = ["LOCALITA", "PROV", "ABITANTI", "NUMERO"]
+        self.csv_headers = ["LOCALITA", "PROV", "ABITANTI", "N_DONNE", "N_TOTALI", "PERC"]
 
         self.logger.info(
             "Verification {0} launched with institution_id set to {1}".format(
@@ -51,7 +52,7 @@ class Command(VerifyBaseCommand):
                 'location__name', 'location__prov', 'location__inhabitants'
             )
         elif institution_id in (6, 7, 8, 9):    # giunte o consigli provinciali o regionali
-            self.csv_headers = ["LOCALITA", "ABITANTI", "NUMERO"]
+            self.csv_headers = ["LOCALITA", "ABITANTI", "N_DONNE", "N_TOTALI", "PERC"]
             qs = qs.filter(
                 charge_type__id=1             # presidente
             ).values_list(
@@ -81,8 +82,9 @@ class Command(VerifyBaseCommand):
         for k, v in total.items():
             merged = [k, v[0], v[1]]
             n_fem = fem[k][2] if k in fem else 0
-            merged.append("{0}/{1}".format(n_fem, total[k][2]))
-
+            merged.append("{0}".format(n_fem))
+            merged.append("{0}".format(total[k][2]))
+            merged.append(locale.format("%.2f",100. * n_fem / float(total[k][2]) ))
             l.append(merged)
 
         self.ko_locs = l

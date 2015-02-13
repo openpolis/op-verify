@@ -134,7 +134,7 @@ class VerifyBaseCommand(BaseCommand):
 
             with open(csv_filename, 'wb+') as destination:
                 csvwriter = csvkit.CSVKitWriter(
-                    destination
+                    destination,
                 )
                 csvwriter.writerow(self.csv_headers)
                 for i, loc in enumerate(self.ko_locs):
