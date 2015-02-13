@@ -22,6 +22,8 @@ class Rule(models.Model):
     )
 
     title = models.CharField(_("title"), default="", max_length=128, help_text=_("A rule's title"))
+    tags = models.CharField(_("tags"), default="",
+                            max_length=128, blank=True, help_text=_("One or more tags, used to form groups"))
     slug = AutoSlugField(populate_from='title', always_update=True)
     description = models.TextField(_("description"), blank=True, null=True, help_text=_("An extensive description of the rule"))
     is_active = models.BooleanField(_('is active'), help_text=_("Whether the rule is active or closed"), default=True)

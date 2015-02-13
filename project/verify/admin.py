@@ -38,9 +38,9 @@ class VerificationInline(admin.TabularInline):
         return super(VerificationInline, self).get_queryset(request).order_by('-launch_ts')
 
 class RuleAdmin(admin.ModelAdmin):
-    list_display = ['__unicode__', 'status', 'last_launched_at', 'notes']
+    list_display = ['__unicode__', 'tags', 'status', 'last_launched_at', 'notes']
     inlines = [VerificationInline,]
-    search_fields = ['title']
+    search_fields = ['title', 'tags']
 
     buttons = [
         {
