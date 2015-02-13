@@ -1,0 +1,587 @@
+[
+    {
+        "Capoluogo": "Agrigento", 
+        "Provincia": "", 
+        "Regione": "Sicilia"
+    }, 
+    {
+        "Capoluogo": "Alessandria", 
+        "Provincia": "", 
+        "Regione": "Piemonte"
+    }, 
+    {
+        "Capoluogo": "Ancona", 
+        "Provincia": "", 
+        "Regione": "Marche"
+    }, 
+    {
+        "Capoluogo": "Andria", 
+        "Provincia": "Barletta-Andria-Trani", 
+        "Regione": "Puglia"
+    }, 
+    {
+        "Capoluogo": "Aosta", 
+        "Provincia": "", 
+        "Regione": "Val d'Aosta"
+    }, 
+    {
+        "Capoluogo": "Arezzo", 
+        "Provincia": "", 
+        "Regione": "Toscana"
+    }, 
+    {
+        "Capoluogo": "Ascoli Piceno", 
+        "Provincia": "", 
+        "Regione": "Marche"
+    }, 
+    {
+        "Capoluogo": "Asti", 
+        "Provincia": "", 
+        "Regione": "Piemonte"
+    }, 
+    {
+        "Capoluogo": "Avellino", 
+        "Provincia": "", 
+        "Regione": "Campania"
+    }, 
+    {
+        "Capoluogo": "Bari", 
+        "Provincia": "", 
+        "Regione": "Puglia"
+    }, 
+    {
+        "Capoluogo": "Barletta", 
+        "Provincia": "Barletta-Andria-Trani", 
+        "Regione": "Puglia"
+    }, 
+    {
+        "Capoluogo": "Belluno", 
+        "Provincia": "", 
+        "Regione": "Veneto"
+    }, 
+    {
+        "Capoluogo": "Benevento", 
+        "Provincia": "", 
+        "Regione": "Campania"
+    }, 
+    {
+        "Capoluogo": "Bergamo", 
+        "Provincia": "", 
+        "Regione": "Lombardia"
+    }, 
+    {
+        "Capoluogo": "Biella", 
+        "Provincia": "", 
+        "Regione": "Piemonte"
+    }, 
+    {
+        "Capoluogo": "Bologna", 
+        "Provincia": "", 
+        "Regione": "Emilia Romagna"
+    }, 
+    {
+        "Capoluogo": "Bolzano - Bozen", 
+        "Provincia": "", 
+        "Regione": "Trentino-Alto Adige"
+    }, 
+    {
+        "Capoluogo": "Brescia", 
+        "Provincia": "", 
+        "Regione": "Lombardia"
+    }, 
+    {
+        "Capoluogo": "Brindisi", 
+        "Provincia": "", 
+        "Regione": "Puglia"
+    }, 
+    {
+        "Capoluogo": "Cagliari", 
+        "Provincia": "", 
+        "Regione": "Sardegna"
+    }, 
+    {
+        "Capoluogo": "Caltanissetta", 
+        "Provincia": "", 
+        "Regione": "Sicilia"
+    }, 
+    {
+        "Capoluogo": "Campobasso", 
+        "Provincia": "", 
+        "Regione": "Molise"
+    }, 
+    {
+        "Capoluogo": "Carbonia", 
+        "Provincia": "Carbonia-Iglesias", 
+        "Regione": "Sardegna"
+    }, 
+    {
+        "Capoluogo": "Caserta", 
+        "Provincia": "", 
+        "Regione": "Campania"
+    }, 
+    {
+        "Capoluogo": "Catania", 
+        "Provincia": "", 
+        "Regione": "Sicilia"
+    }, 
+    {
+        "Capoluogo": "Catanzaro", 
+        "Provincia": "", 
+        "Regione": "Calabria"
+    }, 
+    {
+        "Capoluogo": "Chieti", 
+        "Provincia": "", 
+        "Regione": "Abruzzo"
+    }, 
+    {
+        "Capoluogo": "Como", 
+        "Provincia": "", 
+        "Regione": "Lombardia"
+    }, 
+    {
+        "Capoluogo": "Cosenza", 
+        "Provincia": "", 
+        "Regione": "Calabria"
+    }, 
+    {
+        "Capoluogo": "Cremona", 
+        "Provincia": "", 
+        "Regione": "Lombardia"
+    }, 
+    {
+        "Capoluogo": "Crotone", 
+        "Provincia": "", 
+        "Regione": "Calabria"
+    }, 
+    {
+        "Capoluogo": "Cuneo", 
+        "Provincia": "", 
+        "Regione": "Piemonte"
+    }, 
+    {
+        "Capoluogo": "Enna", 
+        "Provincia": "", 
+        "Regione": "Sicilia"
+    }, 
+    {
+        "Capoluogo": "Fermo", 
+        "Provincia": "", 
+        "Regione": "Marche"
+    }, 
+    {
+        "Capoluogo": "Ferrara", 
+        "Provincia": "", 
+        "Regione": "Emilia Romagna"
+    }, 
+    {
+        "Capoluogo": "Firenze", 
+        "Provincia": "", 
+        "Regione": "Toscana"
+    }, 
+    {
+        "Capoluogo": "Foggia", 
+        "Provincia": "", 
+        "Regione": "Puglia"
+    }, 
+    {
+        "Capoluogo": "Forlì", 
+        "Provincia": "Forlì-Cesena", 
+        "Regione": "Emilia Romagna"
+    }, 
+    {
+        "Capoluogo": "Frosinone", 
+        "Provincia": "", 
+        "Regione": "Lazio"
+    }, 
+    {
+        "Capoluogo": "Genova", 
+        "Provincia": "", 
+        "Regione": "Liguria"
+    }, 
+    {
+        "Capoluogo": "Gorizia", 
+        "Provincia": "", 
+        "Regione": "Friuli-Venezia Giulia"
+    }, 
+    {
+        "Capoluogo": "Grosseto", 
+        "Provincia": "", 
+        "Regione": "Toscana"
+    }, 
+    {
+        "Capoluogo": "Iglesias", 
+        "Provincia": "Carbonia-Iglesias", 
+        "Regione": "Sardegna"
+    }, 
+    {
+        "Capoluogo": "Imperia", 
+        "Provincia": "", 
+        "Regione": "Liguria"
+    }, 
+    {
+        "Capoluogo": "Isernia", 
+        "Provincia": "", 
+        "Regione": "Molise"
+    }, 
+    {
+        "Capoluogo": "La Spezia", 
+        "Provincia": "", 
+        "Regione": "Liguria"
+    }, 
+    {
+        "Capoluogo": "L'Aquila", 
+        "Provincia": "", 
+        "Regione": "Abruzzo"
+    }, 
+    {
+        "Capoluogo": "Lanusei", 
+        "Provincia": "Ogliastra", 
+        "Regione": "Sardegna"
+    }, 
+    {
+        "Capoluogo": "Latina", 
+        "Provincia": "", 
+        "Regione": "Lazio"
+    }, 
+    {
+        "Capoluogo": "Lecce", 
+        "Provincia": "", 
+        "Regione": "Puglia"
+    }, 
+    {
+        "Capoluogo": "Lecco", 
+        "Provincia": "", 
+        "Regione": "Lombardia"
+    }, 
+    {
+        "Capoluogo": "Livorno", 
+        "Provincia": "", 
+        "Regione": "Toscana"
+    }, 
+    {
+        "Capoluogo": "Lodi", 
+        "Provincia": "", 
+        "Regione": "Lombardia"
+    }, 
+    {
+        "Capoluogo": "Lucca", 
+        "Provincia": "", 
+        "Regione": "Toscana"
+    }, 
+    {
+        "Capoluogo": "Macerata", 
+        "Provincia": "", 
+        "Regione": "Marche"
+    }, 
+    {
+        "Capoluogo": "Mantova", 
+        "Provincia": "", 
+        "Regione": "Lombardia"
+    }, 
+    {
+        "Capoluogo": "Massa", 
+        "Provincia": "Massa-Carrara", 
+        "Regione": "Toscana"
+    }, 
+    {
+        "Capoluogo": "Matera", 
+        "Provincia": "", 
+        "Regione": "Basilicata(Lucania)"
+    }, 
+    {
+        "Capoluogo": "Messina", 
+        "Provincia": "", 
+        "Regione": "Sicilia"
+    }, 
+    {
+        "Capoluogo": "Milano", 
+        "Provincia": "", 
+        "Regione": "Lombardia"
+    }, 
+    {
+        "Capoluogo": "Modena", 
+        "Provincia": "", 
+        "Regione": "Emilia Romagna"
+    }, 
+    {
+        "Capoluogo": "Monza", 
+        "Provincia": "", 
+        "Regione": "Lombardia"
+    }, 
+    {
+        "Capoluogo": "Napoli", 
+        "Provincia": "", 
+        "Regione": "Campania"
+    }, 
+    {
+        "Capoluogo": "Novara", 
+        "Provincia": "", 
+        "Regione": "Piemonte"
+    }, 
+    {
+        "Capoluogo": "Nuoro", 
+        "Provincia": "", 
+        "Regione": "Sardegna"
+    }, 
+    {
+        "Capoluogo": "Olbia", 
+        "Provincia": "Olbia-Tempio", 
+        "Regione": "Sardegna"
+    }, 
+    {
+        "Capoluogo": "Oristano", 
+        "Provincia": "", 
+        "Regione": "Sardegna"
+    }, 
+    {
+        "Capoluogo": "Padova", 
+        "Provincia": "", 
+        "Regione": "Veneto"
+    }, 
+    {
+        "Capoluogo": "Palermo", 
+        "Provincia": "", 
+        "Regione": "Sicilia"
+    }, 
+    {
+        "Capoluogo": "Parma", 
+        "Provincia": "", 
+        "Regione": "Emilia Romagna"
+    }, 
+    {
+        "Capoluogo": "Pavia", 
+        "Provincia": "", 
+        "Regione": "Lombardia"
+    }, 
+    {
+        "Capoluogo": "Perugia", 
+        "Provincia": "", 
+        "Regione": "Umbria"
+    }, 
+    {
+        "Capoluogo": "Pesaro", 
+        "Provincia": "Pesaro e Urbino", 
+        "Regione": "Marche"
+    }, 
+    {
+        "Capoluogo": "Pescara", 
+        "Provincia": "", 
+        "Regione": "Abruzzo"
+    }, 
+    {
+        "Capoluogo": "Piacenza", 
+        "Provincia": "", 
+        "Regione": "Emilia Romagna"
+    }, 
+    {
+        "Capoluogo": "Pisa", 
+        "Provincia": "", 
+        "Regione": "Toscana"
+    }, 
+    {
+        "Capoluogo": "Pistoia", 
+        "Provincia": "", 
+        "Regione": "Toscana"
+    }, 
+    {
+        "Capoluogo": "Pordenone", 
+        "Provincia": "", 
+        "Regione": "Friuli-Venezia Giulia"
+    }, 
+    {
+        "Capoluogo": "Potenza", 
+        "Provincia": "", 
+        "Regione": "Basilicata(Lucania)"
+    }, 
+    {
+        "Capoluogo": "Prato", 
+        "Provincia": "", 
+        "Regione": "Toscana"
+    }, 
+    {
+        "Capoluogo": "Ragusa", 
+        "Provincia": "", 
+        "Regione": "Sicilia"
+    }, 
+    {
+        "Capoluogo": "Ravenna", 
+        "Provincia": "", 
+        "Regione": "Emilia Romagna"
+    }, 
+    {
+        "Capoluogo": "Reggio di Calabria", 
+        "Provincia": "", 
+        "Regione": "Calabria"
+    }, 
+    {
+        "Capoluogo": "Reggio nell'Emilia", 
+        "Provincia": "", 
+        "Regione": "Emilia Romagna"
+    }, 
+    {
+        "Capoluogo": "Rieti", 
+        "Provincia": "", 
+        "Regione": "Lazio"
+    }, 
+    {
+        "Capoluogo": "Rimini", 
+        "Provincia": "", 
+        "Regione": "Emilia Romagna"
+    }, 
+    {
+        "Capoluogo": "Roma", 
+        "Provincia": "", 
+        "Regione": "Lazio"
+    }, 
+    {
+        "Capoluogo": "Rovigo", 
+        "Provincia": "", 
+        "Regione": "Veneto"
+    }, 
+    {
+        "Capoluogo": "Salerno", 
+        "Provincia": "", 
+        "Regione": "Campania"
+    }, 
+    {
+        "Capoluogo": "Sanluri", 
+        "Provincia": "Medio Campidano", 
+        "Regione": "Sardegna"
+    }, 
+    {
+        "Capoluogo": "Sassari", 
+        "Provincia": "", 
+        "Regione": "Sardegna"
+    }, 
+    {
+        "Capoluogo": "Savona", 
+        "Provincia": "", 
+        "Regione": "Liguria"
+    }, 
+    {
+        "Capoluogo": "Siena", 
+        "Provincia": "", 
+        "Regione": "Toscana"
+    }, 
+    {
+        "Capoluogo": "Siracusa", 
+        "Provincia": "", 
+        "Regione": "Sicilia"
+    }, 
+    {
+        "Capoluogo": "Sondrio", 
+        "Provincia": "", 
+        "Regione": "Lombardia"
+    }, 
+    {
+        "Capoluogo": "Taranto", 
+        "Provincia": "", 
+        "Regione": "Puglia"
+    }, 
+    {
+        "Capoluogo": "Tempio Pausania", 
+        "Provincia": "Olbia-Tempio", 
+        "Regione": "Sardegna"
+    }, 
+    {
+        "Capoluogo": "Teramo", 
+        "Provincia": "", 
+        "Regione": "Abruzzo"
+    }, 
+    {
+        "Capoluogo": "Terni", 
+        "Provincia": "", 
+        "Regione": "Umbria"
+    }, 
+    {
+        "Capoluogo": "Torino", 
+        "Provincia": "", 
+        "Regione": "Piemonte"
+    }, 
+    {
+        "Capoluogo": "Tortolì", 
+        "Provincia": "Ogliastra", 
+        "Regione": "Sardegna"
+    }, 
+    {
+        "Capoluogo": "Trani", 
+        "Provincia": "Barletta-Andria-Trani", 
+        "Regione": "Puglia"
+    }, 
+    {
+        "Capoluogo": "Trapani", 
+        "Provincia": "", 
+        "Regione": "Sicilia"
+    }, 
+    {
+        "Capoluogo": "Trento", 
+        "Provincia": "", 
+        "Regione": "Trentino-Alto Adige"
+    }, 
+    {
+        "Capoluogo": "Treviso", 
+        "Provincia": "", 
+        "Regione": "Veneto"
+    }, 
+    {
+        "Capoluogo": "Trieste", 
+        "Provincia": "", 
+        "Regione": "Friuli-Venezia Giulia"
+    }, 
+    {
+        "Capoluogo": "Udine", 
+        "Provincia": "", 
+        "Regione": "Friuli-Venezia Giulia"
+    }, 
+    {
+        "Capoluogo": "Urbino", 
+        "Provincia": "Pesaro e Urbino", 
+        "Regione": "Marche"
+    }, 
+    {
+        "Capoluogo": "Varese", 
+        "Provincia": "", 
+        "Regione": "Lombardia"
+    }, 
+    {
+        "Capoluogo": "Venezia", 
+        "Provincia": "", 
+        "Regione": "Veneto"
+    }, 
+    {
+        "Capoluogo": "Verbania", 
+        "Provincia": "Verbano-Cusio-Ossola", 
+        "Regione": "Piemonte"
+    }, 
+    {
+        "Capoluogo": "Vercelli", 
+        "Provincia": "", 
+        "Regione": "Piemonte"
+    }, 
+    {
+        "Capoluogo": "Verona", 
+        "Provincia": "", 
+        "Regione": "Veneto"
+    }, 
+    {
+        "Capoluogo": "Vibo Valentia", 
+        "Provincia": "", 
+        "Regione": "Calabria"
+    }, 
+    {
+        "Capoluogo": "Villacidro", 
+        "Provincia": "Medio Campidano", 
+        "Regione": "Sardegna"
+    }, 
+    {
+        "Capoluogo": "Vicenza", 
+        "Provincia": "", 
+        "Regione": "Veneto"
+    }, 
+    {
+        "Capoluogo": "Viterbo", 
+        "Provincia": "", 
+        "Regione": "Lazio"
+    }
+]
