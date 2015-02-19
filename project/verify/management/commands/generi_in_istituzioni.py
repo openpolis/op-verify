@@ -9,6 +9,8 @@ from django.db.models import Q, Count
 
 __author__ = 'guglielmo'
 
+
+
 class Command(VerifyBaseCommand):
     """
     Report delle statistiche di genere complessive, a livello nazionale,
@@ -22,14 +24,14 @@ class Command(VerifyBaseCommand):
 
     def execute_verification(self, *args, **options):
 
-        self.csv_headers = ["ISTITUZIONE", "N_DONNE", "N_UOMINI", "N_TOTALI", "PERC_DONNE", "PERC_UOMINI"]
+        self.csv_headers = ["ISTITUZIONE", "INCARICO", "N_DONNE", "N_UOMINI", "N_TOTALI", "PERC_DONNE", "PERC_UOMINI"]
 
-        all_institutions_ids = OpInstitution.objects.using('politici').values_list('id', flat=True)
+        institutions = OpInstitution.objects.using('politici').all()
         if args:
-            institution_ids = list( set(map(str, all_institutions_ids)) & set(args) )
+            institutions = institutions.filter(id__in=args)
             self.logger.info(
                 "Verification {0} launched with institutions limited to {1}".format(
-                    self.__class__.__module__, ",".join(institution_ids)
+                    self.__class__.__module__, ",".join(institutions.values_list('id', flat=True))
                 )
             )
         else:
@@ -39,41 +41,40 @@ class Command(VerifyBaseCommand):
                 )
             )
 
-
-        qs = OpInstitutionCharge.objects.using('politici').filter(
-            date_end__isnull=True, content__deleted_at__isnull=True
-        )
-        if args:
-            qs = qs.filter(institution__in=institution_ids)
-
-        mal_qs = qs.filter(politician__sex__iexact='m')
-        fem_qs = qs.filter(politician__sex__iexact='f')
-
-        total = OrderedDict(qs.values_list('institution__name').\
-            annotate(num=Count('institution')).\
-            order_by('institution__id'))
-
-        fem = OrderedDict(fem_qs.values_list('institution__name').\
-            annotate(num=Count('institution')).\
-            order_by('institution__id'))
-
-        mal = OrderedDict(mal_qs.values_list('institution__name').\
-            annotate(num=Count('institution')).\
-            order_by('institution__id'))
-
         self.ok_locs = []
         self.ko_locs = []
-        for k, n_tot in total.items():
-            n_mal = 0
-            n_fem = 0
-            if k in mal:
-                n_mal = mal[k]
-            if k in fem:
-                n_fem = fem[k]
-            merged = [k, n_fem, n_mal, n_tot,]
-            merged.append(locale.format("%.2f",100. * n_fem / float(n_tot) ))
-            merged.append(locale.format("%.2f",100. * n_mal / float(n_tot) ))
-            self.ko_locs.append(merged)
+
+        for institution in institutions:
+
+            charge_types_ids = OpInstitutionCharge.objects.using('politici').\
+                filter(date_end__isnull=True,
+                       content__deleted_at__isnull=True).\
+                filter(institution=institution).\
+                values_list('charge_type', flat=True).\
+                distinct()
+            charge_types = OpChargeType.objects.using('politici').\
+                filter(id__in=charge_types_ids)
+
+            for charge_type in charge_types:
+                self.logger.info(
+                    "Counting {0} in {1}".format(
+                        charge_type.name, institution.name
+                    )
+                )
+                qs = OpInstitutionCharge.objects.using('politici').\
+                    filter(date_end__isnull=True,
+                           content__deleted_at__isnull=True).\
+                    filter(institution=institution,
+                           charge_type=charge_type)
+
+                n_tot = qs.count()
+                n_fem = qs.filter(politician__sex__iexact='f').count()
+                n_mal = n_tot - n_fem
+
+                merged = [institution.name, charge_type.name, n_fem, n_mal, n_tot,]
+                merged.append(locale.format("%.2f",100. * n_fem / float(n_tot) ))
+                merged.append(locale.format("%.2f",100. * n_mal / float(n_tot) ))
+                self.ko_locs.append(merged)
 
         outcome = Verification.OUTCOME.failed
         self.logger.info(
