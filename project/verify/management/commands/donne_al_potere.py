@@ -19,14 +19,20 @@ class Command(VerifyBaseCommand):
     option_list = VerifyBaseCommand.option_list + (
         make_option('--institution_id',
             dest='institution_id',
-            default=6, # giunta regionale
-            help='Institution IDs (6=Giunta Reg, 8=Giunta Prov, 10=Giunta Com)',
+            default=7, # consiglio regionale
+            help='Institution IDs (6=Giunta Reg, 7=Consiglio Reg, 8=Giunta Prov, 9=Consiglio Prov, 10=Giunta Com, 11=Consiglio Com)',
+        ),
+        make_option('--charge_type_id',
+            dest='charge_type_id',
+            default=13, # consigliere
+            help='ChargeType IDs (1=Presidente, 2=Vicepresidente, 12=Assessore, 11=Sottosegretario, 13=Consigliere, 16=Commissario)',
         ),
     )
 
 
     def execute_verification(self, *args, **options):
         institution_id = int(options['institution_id'])
+        charge_type_id = int(options['charge_type_id'])
         self.csv_headers = ["LOCALITA", "PROV", "ABITANTI", "N_DONNE", "N_TOTALI", "PERC"]
 
         self.logger.info(
@@ -43,6 +49,8 @@ class Command(VerifyBaseCommand):
             date_end__isnull=True, content__deleted_at__isnull=True
         ).filter(
             institution__id=institution_id
+        ).filter(
+            charge_type__id=charge_type_id
         )
 
         if institution_id in (10, 11):          # giunta o consiglio comunale
