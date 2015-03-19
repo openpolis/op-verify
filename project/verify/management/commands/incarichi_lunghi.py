@@ -14,7 +14,6 @@ class Command(VerifyBaseCommand):
     Verify that an institution charge is shorter than 5 years
     List the exceptions
     """
-    args = '<institution_id institution_id ...>'
     help = "Check that all institution charges have a duration of less than 5 years."
 
     option_list = VerifyBaseCommand.option_list + (

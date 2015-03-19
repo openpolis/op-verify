@@ -16,10 +16,20 @@ class Command(VerifyBaseCommand):
     Verify that an institution charge has no overlapping charge
     List the exceptions
     """
-    args = '<institution_id institution_id ...>'
-    help = "Check that all institution charges are unique in their period."
+    help = "Check that all institution charges are not overlapping," +\
+            "or discontinuous over time."
 
-    option_list = VerifyBaseCommand.option_list
+    option_list = VerifyBaseCommand.option_list + (
+        make_option('--type',
+            dest='type',
+            help='dicover overlappings or doscontinuities',
+        ),
+        make_option('--max-days',
+            dest='max_days',
+            default=30,
+            help="Number of days to declare a discontinuity")
+    )
+
 
     def execute_verification(self, *args, **options):
         self.csv_headers = [
@@ -32,6 +42,11 @@ class Command(VerifyBaseCommand):
                 self.__class__.__module__
             )
         )
+
+        max_days = int(options['max_days'])
+        verification_type = options['type']
+        if verification_type not in ('overlap', 'discontinuity'):
+            raise Exception("Wrong parameter type passed to task. Possible values: ovelap, discontinuity.")
 
         # verification process
         self.ok_locs = []
@@ -53,13 +68,10 @@ class Command(VerifyBaseCommand):
             'location__name', 'location__prov', 'date_start', 'date_end'
         )
 
-        qs = qs.filter(location__inhabitants__gt=100000)
-
         data = qs.order_by(
             'institution__id', 'location__location_type', '-location__inhabitants'
         )
 
-        self.ko_locs = []
         # groups all charges by the first 4 fields:
         # charge name, institution name, location name, prov
         for key, group in groupby(data, lambda x: x[0:4]):
@@ -68,7 +80,17 @@ class Command(VerifyBaseCommand):
 
             # extract all elements whose date_end (6th field)
             # is greater than the start_date (5th field) of the successive element
-            exceptions = ifilter(lambda x: x[1] and x[0][5] and x[1][4] and (x[0][5] > x[1][4]), get_next(g))
+            if verification_type == 'overlap':
+                exceptions = ifilter(
+                    lambda x: x[1] and x[0][5] and x[1][4] and
+                              (x[0][5] > x[1][4]), get_next(g)
+                )
+            else:
+                exceptions = ifilter(
+                    lambda x: x[1] and x[0][5] and x[1][4] and
+                              ((g[1][4] - g[0][5]).days > max_days), get_next(g)
+                )
+
             for e in exceptions:
                 self.ko_locs.append(e[0])
                 self.ko_locs.append(e[1])
