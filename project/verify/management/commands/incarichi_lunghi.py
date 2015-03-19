@@ -15,7 +15,7 @@ class Command(VerifyBaseCommand):
     List the exceptions
     """
     args = '<institution_id institution_id ...>'
-    help = "Check that all institutin charges have a duration of less than 5 years."
+    help = "Check that all institution charges have a duration of less than 5 years."
 
     option_list = VerifyBaseCommand.option_list + (
         make_option('--institution_id',
@@ -43,7 +43,7 @@ class Command(VerifyBaseCommand):
         else:
             self.logger.info(
                 "Verification {0} launched for all institutions".format(
-                    self.__class__.__module__, institution_id
+                    self.__class__.__module__
                 )
             )
 
