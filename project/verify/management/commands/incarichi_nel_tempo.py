@@ -33,7 +33,7 @@ class Command(VerifyBaseCommand):
 
     def execute_verification(self, *args, **options):
         self.csv_headers = [
-            "INCARICO", "ISTITUZIONE",
+            "NOME", "COGNOME", "DATA_NASCITA", "INCARICO", "ISTITUZIONE",
             "LOCALITA", "PROV", "DATA_INIZIO", "DATA_FINE",
         ]
 
@@ -64,6 +64,8 @@ class Command(VerifyBaseCommand):
             Q(charge_type__name__iexact='presidente della repubblica')
         )
         qs = qs.select_related().values_list(
+            'politician__first_name', 'politician__last_name',
+            'politician__birth_date',
             'charge_type__name', 'institution__name',
             'location__name', 'location__prov', 'date_start', 'date_end'
         )
@@ -72,23 +74,23 @@ class Command(VerifyBaseCommand):
             'institution__id', 'location__location_type', '-location__inhabitants'
         )
 
-        # groups all charges by the first 4 fields:
-        # charge name, institution name, location name, prov
-        for key, group in groupby(data, lambda x: x[0:4]):
-            # generate sorted list, using 5th field (date_start) as sorting key
-            g = sorted(list(group), key=lambda x: x[4])
+        # groups all charges by the fields
+        # charge_type__name, institution__name, location__name, location__prov
+        for key, group in groupby(data, lambda x: x[3:7]):
+            # generate sorted list, using 8th field (date_start) as sorting key
+            g = sorted(list(group), key=lambda x: x[7])
 
-            # extract all elements whose date_end (6th field)
+            # extract all elements whose date_end (9th field)
             # is greater than the start_date (5th field) of the successive element
             if verification_type == 'overlap':
                 exceptions = ifilter(
-                    lambda x: x[1] and x[0][5] and x[1][4] and
-                              (x[0][5] > x[1][4]), get_next(g)
+                    lambda x: x[1] and x[0][8] and x[1][7] and
+                              (x[0][8] > x[1][7]), get_next(g)
                 )
             else:
                 exceptions = ifilter(
-                    lambda x: x[1] and x[0][5] and x[1][4] and
-                              ((g[1][4] - g[0][5]).days > max_days), get_next(g)
+                    lambda x: x[1] and x[0][8] and x[1][7] and
+                              ((g[1][7] - g[0][8]).days > max_days), get_next(g)
                 )
 
             for e in exceptions:
