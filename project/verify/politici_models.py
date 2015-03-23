@@ -132,7 +132,7 @@ class OpPolitician(models.Model):
     first_name = models.CharField(max_length=64, blank=True)
     last_name = models.CharField(max_length=64, blank=True)
     sex = models.CharField(max_length=1, blank=True)
-    #    picture = models.TextField(blank=True)
+    picture = models.TextField(blank=True)
     birth_date = models.DateTimeField(null=True, blank=True)
     birth_location = models.CharField(max_length=128, blank=True)
     death_date = models.DateTimeField(null=True, blank=True)
