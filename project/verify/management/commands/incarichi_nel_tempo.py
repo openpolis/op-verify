@@ -81,7 +81,7 @@ class Command(VerifyBaseCommand):
             g = sorted(list(group), key=lambda x: x[7])
 
             # extract all elements whose date_end (9th field)
-            # is greater than the start_date (5th field) of the successive element
+            # is greater than the start_date (8th field) of the successive element
             if verification_type == 'overlap':
                 exceptions = ifilter(
                     lambda x: x[1] and x[0][8] and x[1][7] and
