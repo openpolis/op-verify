@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
 from collections import OrderedDict
 from optparse import make_option
-import os
-import csvkit
-from django.core.files import File
-from django.utils import timezone
-import math
 from verify.management.commands import VerifyBaseCommand
 from verify.models import *
 from verify.politici_models import *
 from django.db.models import Q, Count
+import json
 from os.path import abspath, basename, dirname, join, normpath
 
 __author__ = 'guglielmo'
@@ -21,6 +17,13 @@ N_MEMBRI = {
         ( 250000, 36),
         ( 100000, 32),
         (  30000, 24),
+    ]),
+    'st_ordinario_cl': OrderedDict([
+        (1000000, 48),
+        ( 500000, 40),
+        ( 250000, 36),
+        ( 100000, 32),
+        (  30000, 32),
     ]),
     'sardegna': OrderedDict([
         (100000, 34),
@@ -39,6 +42,13 @@ N_MEMBRI = {
         ( 250000, 9),
         ( 100000, 8),
         (  30000, 6),
+    ]),
+    'giunta_cl': OrderedDict([
+        (1000000, 12),
+        ( 500000, 10),
+        ( 250000, 9),
+        ( 100000, 8),
+        (  30000, 8),
     ])
 }
 
@@ -76,7 +86,7 @@ class Command(VerifyBaseCommand):
             institution_id = 11
             charge_type_id = 13
 
-        nmembers_dict = OpLocation.objects.using('politici').filter(
+        locs = OpLocation.objects.using('politici').filter(
             opinstitutioncharge__institution__id=institution_id,
             opinstitutioncharge__charge_type__id=charge_type_id,
             opinstitutioncharge__date_end__isnull=True,
@@ -86,7 +96,10 @@ class Command(VerifyBaseCommand):
             n=Count('opinstitutioncharge')
         )
 
-        for l in nmembers_dict:
+        with open('capoluoghi.json', 'r') as f:
+            capoluoghi = [c['Capoluogo'] for c in json.load(f, encoding='utf8')]
+
+        for l in locs:
             # skip comuni with commissari
             try:
                 has_commissario = l.opinstitutioncharge_set.get(
@@ -110,10 +123,16 @@ class Command(VerifyBaseCommand):
                     elif l.regional_id == 21: # sicilia
                         limiti = N_MEMBRI['sicilia']
                     else:
-                        limiti = N_MEMBRI['st_ordinario']
+                        if l.name in capoluoghi:
+                            limiti = N_MEMBRI['st_ordinario_cl']
+                        else:
+                            limiti = N_MEMBRI['st_ordinario']
 
             else: # giunta comunale
-                limiti = N_MEMBRI['giunta']
+                if l.name in capoluoghi:
+                    limiti = N_MEMBRI['giunta']
+                else:
+                    limiti = N_MEMBRI['giunta_cl']
 
             for lim, nc in limiti.items():
                 if l.inhabitants > lim:
