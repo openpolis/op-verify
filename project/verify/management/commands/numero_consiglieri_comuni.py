@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from collections import OrderedDict
 from optparse import make_option
+import os
 from verify.management.commands import VerifyBaseCommand
 from verify.models import *
 from verify.politici_models import *
@@ -96,7 +97,8 @@ class Command(VerifyBaseCommand):
             n=Count('opinstitutioncharge')
         )
 
-        with open('capoluoghi.json', 'r') as f:
+        capoluoghi_file = os.path.join(settings.PROJECT_PATH, 'capoluoghi.json')
+        with open(capoluoghi_file, 'r') as f:
             capoluoghi = [c['Capoluogo'] for c in json.load(f, encoding='utf8')]
 
         for l in locs:
