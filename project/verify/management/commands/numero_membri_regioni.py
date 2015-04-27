@@ -60,7 +60,7 @@ N_MEMBRI = {
 
 class Command(VerifyBaseCommand):
     """
-    Verify that all regioni have the correct number of members
+    Verify that all regions have the correct number of members
     """
     args = '<op_location_id op_location_id ...>'
     help = "Check that all comuni have the correct number of members"

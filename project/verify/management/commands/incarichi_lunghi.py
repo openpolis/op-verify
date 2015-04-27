@@ -28,7 +28,7 @@ class Command(VerifyBaseCommand):
     def execute_verification(self, *args, **options):
         institution_id = int(options['institution_id'])
         self.csv_headers = [
-            "NOME", "COGNOME", "DATA NASCITA", "LUOGO NASCITA",
+            "NOME", "COGNOME", "OP_ID", "DATA NASCITA", "LUOGO NASCITA",
             "PARTITO", "INCARICO", "ISTITUZIONE",
             "LOCALITA", "PROV", "DATA INIZIO INCARICO"
         ]
@@ -67,7 +67,7 @@ class Command(VerifyBaseCommand):
             Q(charge_type__name__iexact='senatore a vita')
         )
         qs = qs.select_related().values_list(
-            'politician__first_name', 'politician__last_name',
+            'politician__first_name', 'politician__last_name', 'politician__content_id',
             'politician__birth_date', 'politician__birth_location',
             'party__name', 'charge_type__name',
             'institution__name', 'location__name', 'location__prov', 'date_start'

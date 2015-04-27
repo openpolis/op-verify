@@ -26,7 +26,7 @@ class Command(VerifyBaseCommand):
     def execute_verification(self, *args, **options):
         ab_threshold = int(options['ab_threshold'])
         self.csv_headers = [
-            "NOME", "COGNOME", "DATA NASCITA", "LUOGO NASCITA",
+            "NOME", "COGNOME", "OP_ID", "DATA NASCITA", "LUOGO NASCITA",
             "LOCALITA", "PROV", "DATA INIZIO INCARICO"
         ]
 
@@ -51,7 +51,7 @@ class Command(VerifyBaseCommand):
         )
 
         qs = qs.values_list(
-            'politician__first_name', 'politician__last_name',
+            'politician__first_name', 'politician__last_name', 'politician__content_id',
             'politician__birth_date', 'politician__birth_location',
             'location__name', 'location__prov', 'date_start'
         )
