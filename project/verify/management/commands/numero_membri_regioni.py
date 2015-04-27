@@ -114,8 +114,12 @@ class Command(VerifyBaseCommand):
             self.logger.debug(u'Processing location {0}'.format(l.name))
 
             n_consiglieri = N_MEMBRI[institution][l.name]
-            if l.n != N_MEMBRI[institution][l.name]:
-                self.ko_locs.append((l.name, l.id, l.n, n_consiglieri, l.inhabitants))
+            if institution == 'consiglio':
+                if l.n != N_MEMBRI[institution][l.name]:
+                    self.ko_locs.append((l.name, l.id, l.n, n_consiglieri, l.inhabitants))
+            else:
+                if l.n > N_MEMBRI[institution][l.name]:
+                    self.ko_locs.append((l.name, l.id, l.n, n_consiglieri, l.inhabitants))
 
 
         if len(self.ko_locs):
