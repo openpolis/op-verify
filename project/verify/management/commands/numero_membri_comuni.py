@@ -7,7 +7,6 @@ from verify.models import *
 from verify.politici_models import *
 from django.db.models import Q, Count
 import json
-from os.path import abspath, basename, dirname, join, normpath
 
 __author__ = 'guglielmo'
 
