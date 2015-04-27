@@ -76,7 +76,7 @@ class Command(VerifyBaseCommand):
 
     def execute_verification(self, *args, **options):
         institution = options['institution']
-        self.csv_headers = ["NOME", "LOC ID", "N CONSIGLIERI", "N PREVISTO", "ABITANTI"]
+        self.csv_headers = ["NOME", "LOC ID", "N MEMBRI", "N PREVISTO", "ABITANTI"]
 
         self.logger.info(
             "Verification {0} launched with institution set to {1}".format(
